@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: zuul
+
+  # 配置中心的配置，不要覆盖本地配置
+  cloud:
+    config:
+      override-none: true
+  rabbitmq:
+    host: 192.168.64.140
+    port: 5672
+    username: admin
+    password: admin
+
+  zipkin:
+    sender:
+      type: rabbit
+server:
+  port: 3001
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka1:2001/eureka,http://eureka2:2002/eureka
+
+zuul:
+  routes:
+    item-service: /item-service/**
+    user-service: /user-service/**
+    order-service: /order-service/**
+
+  retryable: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
